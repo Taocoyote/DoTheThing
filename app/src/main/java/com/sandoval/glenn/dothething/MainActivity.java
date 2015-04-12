@@ -2,6 +2,7 @@ package com.sandoval.glenn.dothething;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,32 +15,53 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import greendao.DaoMaster;
+import greendao.DaoSession;
+import greendao.Task;
 
 
 public class MainActivity extends Activity {
 
-    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    ArrayList<String> listItems = new ArrayList<>();
+    ArrayList<Task> listItems = new ArrayList<>();
 
-    //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
-    ArrayAdapter<String> adapter;
+    TaskAdapter adapter;
 
-    //RECORDING HOW MANY TIMES THE BUTTON HAS BEEN CLICKED
     int clickCounter = 0;
 
-    ListView list1;
+    ListView tasksView;
+
+    public DaoSession daoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                listItems);
-        list1 = (ListView) findViewById(R.id.list);
-        list1.setAdapter(adapter);
+
+        setupDatabase();
+
+        List<Task> existingTasks = daoSession.getTaskDao().loadAll();
+
+        for(Task t: existingTasks){
+            listItems.add(t);
+        }
+
+        adapter = new TaskAdapter(listItems);
+        tasksView = (ListView) findViewById(R.id.list);
+        tasksView.setAdapter(adapter);
     }
 
+    private void setupDatabase() {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "tasks-db", null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
+
+    public DaoSession getDaoSession() {
+        return daoSession;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,7 +86,10 @@ public class MainActivity extends Activity {
     }
 
     public void buttonClick(View v) {
-        listItems.add("Clicked : " + clickCounter++);
+        Task t = new Task();
+        t.setMessage("Clicked : " + clickCounter++);
+        getDaoSession().getTaskDao().insert(t);
+        listItems.add(t);
         adapter.notifyDataSetChanged();
     }
 }
