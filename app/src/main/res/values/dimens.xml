@@ -6,6 +6,6 @@
     <!-- Task List -->
     <dimen name="task_list_message_size">16sp</dimen>
     <dimen name="task_list_message_bottom_margin">8dp</dimen>
-    <dimen name="task_list_image_size">16sp</dimen>
+    <dimen name="task_list_image_size">16dp</dimen>
 
 </resources>
