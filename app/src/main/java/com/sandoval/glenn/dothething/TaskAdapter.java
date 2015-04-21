@@ -1,8 +1,11 @@
 package com.sandoval.glenn.dothething;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,20 +29,28 @@ public class TaskAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View v, ViewGroup vg) {
-        Task t = (Task)getItem(i);
+        Task t = (Task) getItem(i);
+
+        Context c = vg.getContext();
+
+        LinearLayout ll;
         TextView tv;
-        if(v == null) {
-            tv = new TextView(vg.getContext());
+        if (v == null) {
+            LayoutInflater inflater = (LayoutInflater) c.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ll = (LinearLayout) inflater.inflate(R.layout.task_list_item, null);
         } else {
-            tv = (TextView)v;
+            ll = (LinearLayout) v;
         }
+
+        tv = (TextView) ll.getChildAt(1);
         tv.setText(t.getMessage());
-        return tv;
+
+        return ll;
     }
 
     @Override
     public long getItemId(int i) {
-        Task item = (Task)getItem(i);
+        Task item = (Task) getItem(i);
         return item.getId();
     }
 

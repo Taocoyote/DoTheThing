@@ -20,6 +20,7 @@ import java.util.List;
 import greendao.DaoMaster;
 import greendao.DaoSession;
 import greendao.Task;
+import greendao.TaskDao;
 
 
 public class MainActivity extends Activity {
@@ -41,9 +42,9 @@ public class MainActivity extends Activity {
 
         setupDatabase();
 
-        List<Task> existingTasks = daoSession.getTaskDao().loadAll();
+        List<Task> existingTasks = getDaoSession().loadAll();
 
-        for(Task t: existingTasks){
+        for (Task t : existingTasks) {
             listItems.add(t);
         }
 
@@ -59,8 +60,8 @@ public class MainActivity extends Activity {
         daoSession = daoMaster.newSession();
     }
 
-    public DaoSession getDaoSession() {
-        return daoSession;
+    public TaskDao getDaoSession() {
+        return daoSession.getTaskDao();
     }
 
     @Override
@@ -88,7 +89,7 @@ public class MainActivity extends Activity {
     public void buttonClick(View v) {
         Task t = new Task();
         t.setMessage("Clicked : " + clickCounter++);
-        getDaoSession().getTaskDao().insert(t);
+        getDaoSession().insert(t);
         listItems.add(t);
         adapter.notifyDataSetChanged();
     }
