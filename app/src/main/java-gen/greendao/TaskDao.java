@@ -27,6 +27,8 @@ public class TaskDao extends AbstractDao<Task, Long> {
         public final static Property Message = new Property(1, String.class, "message", false, "MESSAGE");
     };
 
+    private DaoSession daoSession;
+
 
     public TaskDao(DaoConfig config) {
         super(config);
@@ -34,6 +36,7 @@ public class TaskDao extends AbstractDao<Task, Long> {
     
     public TaskDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -64,6 +67,12 @@ public class TaskDao extends AbstractDao<Task, Long> {
         if (message != null) {
             stmt.bindString(2, message);
         }
+    }
+
+    @Override
+    protected void attachEntity(Task entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */
