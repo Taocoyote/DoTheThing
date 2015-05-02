@@ -12,7 +12,7 @@ public class MyDaoGenerator {
 
         Entity task = schema.addEntity("Task");
         task.addIdProperty();
-        task.addStringProperty("image");
+        task.addStringProperty("imagepath");
         task.addStringProperty("message");
 
         Entity time = schema.addEntity("Time");

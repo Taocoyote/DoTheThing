@@ -24,7 +24,7 @@ public class TaskDao extends AbstractDao<Task, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Image = new Property(1, String.class, "image", false, "IMAGE");
+        public final static Property Imagepath = new Property(1, String.class, "imagepath", false, "IMAGEPATH");
         public final static Property Message = new Property(2, String.class, "message", false, "MESSAGE");
     };
 
@@ -45,7 +45,7 @@ public class TaskDao extends AbstractDao<Task, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'TASK' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'IMAGE' TEXT," + // 1: image
+                "'IMAGEPATH' TEXT," + // 1: imagepath
                 "'MESSAGE' TEXT);"); // 2: message
     }
 
@@ -65,9 +65,9 @@ public class TaskDao extends AbstractDao<Task, Long> {
             stmt.bindLong(1, id);
         }
  
-        String image = entity.getImage();
-        if (image != null) {
-            stmt.bindString(2, image);
+        String imagepath = entity.getImagepath();
+        if (imagepath != null) {
+            stmt.bindString(2, imagepath);
         }
  
         String message = entity.getMessage();
@@ -93,7 +93,7 @@ public class TaskDao extends AbstractDao<Task, Long> {
     public Task readEntity(Cursor cursor, int offset) {
         Task entity = new Task( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // image
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // imagepath
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // message
         );
         return entity;
@@ -103,7 +103,7 @@ public class TaskDao extends AbstractDao<Task, Long> {
     @Override
     public void readEntity(Cursor cursor, Task entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setImage(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setImagepath(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setMessage(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
      }
     
