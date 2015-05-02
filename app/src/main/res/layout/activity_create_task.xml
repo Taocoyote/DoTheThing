@@ -9,9 +9,49 @@
     android:theme="@android:style/Theme.DeviceDefault"
     tools:context="com.sandoval.glenn.dothething.CreateTaskActivity">
 
-    <TextView
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:editable="false"
+        android:enabled="true"
+        android:inputType="text"
+        android:maxLines="1"
+        android:hint="Message" />
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="OK"
+        android:id="@+id/buttonOK"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText"
+        android:onClick="buttonOkClick" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/buttonCancel"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/buttonOK"
+        android:layout_toStartOf="@+id/buttonOK"
+        android:singleLine="true"
+        android:onClick="buttonCancelClick" />
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/taskImageView"
+        android:layout_below="@+id/editText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:onClick="selectImage"
+        android:background="@color/accent_material_light"
+        android:contentDescription="Task Image"
+        android:cropToPadding="false" />
 </RelativeLayout>
