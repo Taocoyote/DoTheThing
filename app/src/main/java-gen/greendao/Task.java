@@ -11,6 +11,7 @@ import de.greenrobot.dao.DaoException;
 public class Task {
 
     private Long id;
+    private String image;
     private String message;
 
     /** Used to resolve relations */
@@ -28,8 +29,9 @@ public class Task {
         this.id = id;
     }
 
-    public Task(Long id, String message) {
+    public Task(Long id, String image, String message) {
         this.id = id;
+        this.image = image;
         this.message = message;
     }
 
@@ -45,6 +47,14 @@ public class Task {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getMessage() {

@@ -2,4 +2,7 @@
     <string name="app_name">DoTheThing</string>
     <string name="action_settings">Settings</string>
     <string name="addTask">Add Task</string>
+    <string name="title_activity_create_task">Create Task</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

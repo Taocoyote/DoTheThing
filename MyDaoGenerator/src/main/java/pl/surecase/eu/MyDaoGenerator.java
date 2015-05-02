@@ -9,8 +9,10 @@ public class MyDaoGenerator {
 
     public static void main(String args[]) throws Exception {
         Schema schema = new Schema(3, "greendao");
+
         Entity task = schema.addEntity("Task");
         task.addIdProperty();
+        task.addStringProperty("image");
         task.addStringProperty("message");
 
         Entity time = schema.addEntity("Time");

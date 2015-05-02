@@ -24,7 +24,8 @@ public class TaskDao extends AbstractDao<Task, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Message = new Property(1, String.class, "message", false, "MESSAGE");
+        public final static Property Image = new Property(1, String.class, "image", false, "IMAGE");
+        public final static Property Message = new Property(2, String.class, "message", false, "MESSAGE");
     };
 
     private DaoSession daoSession;
@@ -44,7 +45,8 @@ public class TaskDao extends AbstractDao<Task, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'TASK' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MESSAGE' TEXT);"); // 1: message
+                "'IMAGE' TEXT," + // 1: image
+                "'MESSAGE' TEXT);"); // 2: message
     }
 
     /** Drops the underlying database table. */
@@ -63,9 +65,14 @@ public class TaskDao extends AbstractDao<Task, Long> {
             stmt.bindLong(1, id);
         }
  
+        String image = entity.getImage();
+        if (image != null) {
+            stmt.bindString(2, image);
+        }
+ 
         String message = entity.getMessage();
         if (message != null) {
-            stmt.bindString(2, message);
+            stmt.bindString(3, message);
         }
     }
 
@@ -86,7 +93,8 @@ public class TaskDao extends AbstractDao<Task, Long> {
     public Task readEntity(Cursor cursor, int offset) {
         Task entity = new Task( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // message
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // image
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // message
         );
         return entity;
     }
@@ -95,7 +103,8 @@ public class TaskDao extends AbstractDao<Task, Long> {
     @Override
     public void readEntity(Cursor cursor, Task entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMessage(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setImage(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMessage(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
      }
     
     /** @inheritdoc */

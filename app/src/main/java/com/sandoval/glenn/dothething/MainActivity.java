@@ -1,67 +1,29 @@
 package com.sandoval.glenn.dothething;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import greendao.DaoMaster;
-import greendao.DaoSession;
-import greendao.Task;
-import greendao.TaskDao;
 
 
 public class MainActivity extends Activity {
 
-    ArrayList<Task> listItems = new ArrayList<>();
-
-    TaskAdapter adapter;
-
-    int clickCounter = 0;
-
+    DataManager _manager = DataManager.getInstance();
     ListView tasksView;
-
-    public DaoSession daoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupDatabase();
+        _manager.setupDatabase(getApplicationContext());
 
-        List<Task> existingTasks = getDaoSession().loadAll();
-
-        for (Task t : existingTasks) {
-            listItems.add(t);
-        }
-
-        adapter = new TaskAdapter(listItems);
+        TaskAdapter adapter = _manager.getAdapter();
         tasksView = (ListView) findViewById(R.id.list);
         tasksView.setAdapter(adapter);
-    }
-
-    private void setupDatabase() {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "tasks-db", null);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-    }
-
-    public TaskDao getDaoSession() {
-        return daoSession.getTaskDao();
     }
 
     @Override
@@ -87,10 +49,7 @@ public class MainActivity extends Activity {
     }
 
     public void buttonClick(View v) {
-        Task t = new Task();
-        t.setMessage("Clicked : " + clickCounter++);
-        getDaoSession().insert(t);
-        listItems.add(t);
-        adapter.notifyDataSetChanged();
+        Intent intent = new Intent(this, CreateTaskActivity.class);
+        startActivity(intent);
     }
 }
