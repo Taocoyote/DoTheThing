@@ -54,4 +54,50 @@
         android:background="@color/accent_material_light"
         android:contentDescription="Task Image"
         android:cropToPadding="false" />
+
+    <ToggleButton
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButton"
+        android:layout_below="@+id/taskImageView"
+        android:textOn="Specific time"
+        android:textOff="Interval"
+        android:onClick="toggleType" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toggleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/buttonOK"
+        android:id="@+id/interval">
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerInterval"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="223dp"
+            android:layout_marginEnd="223dp"
+            android:layout_marginTop="225dp"
+            android:spinnerMode="dialog" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toggleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/buttonOK"
+        android:visibility="invisible"
+        android:id="@+id/scheduled">
+
+    </RelativeLayout>
+
+
 </RelativeLayout>

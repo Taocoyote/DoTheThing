@@ -8,7 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.ToggleButton;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -18,11 +22,17 @@ public class CreateTaskActivity extends Activity {
 
     private Uri selectedImage;
     static final int SELECT_PHOTO = 1;
+    private Boolean scheduled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
+
+        Spinner spTimes = (Spinner) findViewById(R.id.spinnerInterval);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.times, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTimes.setAdapter(adapter);
     }
 
     @Override
@@ -64,7 +74,7 @@ public class CreateTaskActivity extends Activity {
                     selectedImage = imageReturnedIntent.getData();
                     try {
                         decodeUri(selectedImage);
-                    } catch (FileNotFoundException fnf){
+                    } catch (FileNotFoundException fnf) {
                         //panic
                     }
                 }
@@ -99,8 +109,25 @@ public class CreateTaskActivity extends Activity {
         o2.inSampleSize = scale;
         Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
 
-        ImageView iv = (ImageView)findViewById(R.id.taskImageView);
-       iv.setImageBitmap(bm);
+        ImageView iv = (ImageView) findViewById(R.id.taskImageView);
+        iv.setImageBitmap(bm);
+
+    }
+
+    public void toggleType(View v) {
+        RelativeLayout rvScheduled = (RelativeLayout) findViewById(R.id.scheduled);
+        RelativeLayout rvInterval = (RelativeLayout) findViewById(R.id.interval);
+        ToggleButton tb = (ToggleButton) findViewById(R.id.toggleButton);
+
+        scheduled = tb.isChecked();
+
+        if (scheduled) {
+            rvInterval.setVisibility(View.INVISIBLE);
+            rvScheduled.setVisibility(View.VISIBLE);
+        } else {
+            rvInterval.setVisibility(View.VISIBLE);
+            rvScheduled.setVisibility(View.INVISIBLE);
+        }
 
     }
 
