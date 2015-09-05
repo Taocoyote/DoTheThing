@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -23,6 +24,8 @@ public class CreateTaskActivity extends Activity {
     private Uri selectedImage;
     static final int SELECT_PHOTO = 1;
     private Boolean scheduled = false;
+    private DataManager _manager = DataManager.getInstance();
+    EditText _editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +33,12 @@ public class CreateTaskActivity extends Activity {
         setContentView(R.layout.activity_create_task);
 
         Spinner spTimes = (Spinner) findViewById(R.id.spinnerInterval);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.times, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.times, android.R.layout.simple_spinner_item
+        );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTimes.setAdapter(adapter);
+        _editText = (EditText)findViewById(R.id.editText);
     }
 
     @Override
@@ -51,6 +57,7 @@ public class CreateTaskActivity extends Activity {
     }
 
     public void buttonOkClick(View v) {
+        _manager.addTask(_editText.getText().toString());
         finish();
     }
 
@@ -95,8 +102,7 @@ public class CreateTaskActivity extends Activity {
         int width_tmp = o.outWidth, height_tmp = o.outHeight;
         int scale = 1;
         while (true) {
-            if (width_tmp / 2 < REQUIRED_SIZE
-                    || height_tmp / 2 < REQUIRED_SIZE) {
+            if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE) {
                 break;
             }
             width_tmp /= 2;
@@ -107,7 +113,9 @@ public class CreateTaskActivity extends Activity {
         // Decode with inSampleSize
         BitmapFactory.Options o2 = new BitmapFactory.Options();
         o2.inSampleSize = scale;
-        Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
+        Bitmap bm = BitmapFactory.decodeStream(
+                getContentResolver().openInputStream(selectedImage), null, o2
+        );
 
         ImageView iv = (ImageView) findViewById(R.id.taskImageView);
         iv.setImageBitmap(bm);

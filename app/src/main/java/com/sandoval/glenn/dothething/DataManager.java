@@ -61,4 +61,10 @@ public class DataManager {
         _adapter.notifyDataSetChanged();
     }
 
+    public void deleteTask(Task t) {
+        listItems.remove(t);
+        getDaoSession().delete(t);
+        _adapter.notifyDataSetChanged();
+    }
+
 }
